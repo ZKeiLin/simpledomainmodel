@@ -61,7 +61,6 @@ public struct Money {
 
 ////////////////////////////////////
 // Job
-
 open class Job {
     fileprivate var title : String
     fileprivate var type : JobType
@@ -80,7 +79,7 @@ open class Job {
     open func calculateIncome(_ hours: Int) -> Int {
         switch self.type{
             case.Hourly(let salary):
-                return hours * Int(salary)
+                return Int(Double(hours) * salary)
             case.Salary(let salary):
                 return Int(salary)
         }
@@ -162,13 +161,7 @@ open class Family {
     open func householdIncome() -> Int {
         var sum = 0
         for person in self.members{
-            switch person._job?.type{
-            case.Hourly(let salary)?:
-                sum += Int(salary * 2000)
-            case.Salary(let salary)?:
-                sum += Int(salary)
-            case nil: sum += 0
-            }
+            sum += person.job?.calculateIncome(2000) ?? 0
         }
         return sum
     }
